@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .t { fill: #1f1a16; }
+    .a { fill: #ea580c; }
+    .c { fill: #f3eee6; }
+    @media (prefers-color-scheme: dark) {
+      .t { fill: #20232b; }
+      .a { fill: #5b93ff; }
+      .c { fill: #e4ecff; }
+    }
+  </style>
+  <rect class="t" width="64" height="64" rx="15"/>
+  <circle class="a" cx="20" cy="32" r="9.5"/>
+  <circle class="c" cx="38.5" cy="32" r="6.2" opacity=".85"/>
+  <circle class="c" cx="51" cy="32" r="3.6" opacity=".45"/>
+</svg>
