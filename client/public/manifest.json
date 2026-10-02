@@ -1,0 +1,15 @@
+{
+  "short_name": "Triage",
+  "name": "Triage: know which jobs deserve your time",
+  "description": "Search LinkedIn, Indeed, and Glassdoor at once, see what every posting really asks for, and rank jobs by fit.",
+  "icons": [
+    { "src": "favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "logo192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "logo512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "maskable512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1f1a16",
+  "background_color": "#f6f3ec"
+}
