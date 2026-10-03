@@ -1,6 +1,6 @@
 // The Triage mark ("Signal"): three dots, biggest first, like a sorted list
 // read at a glance. Colors come from CSS variables, so the mark is orange in
-// light mode and blue in dark mode.
+// light mode and ember in dark mode.
 export function LogoMark({ size = 28, title }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" role={title ? "img" : undefined} aria-hidden={title ? undefined : true} aria-label={title}>

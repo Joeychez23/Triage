@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { AlarmClock, ArrowUpRight, CalendarClock, ExternalLink, KanbanSquare, Plus, Star, Trash2, X } from "lucide-react";
+import { AlarmClock, ArrowUpRight, CalendarClock, ExternalLink, Plus, Star, Trash2, X } from "lucide-react";
+import Sep from "../components/Sep";
 import CompanyMark from "../components/CompanyMark";
 import Chip from "../components/Chip";
 import Dialog from "../components/Dialog";
@@ -146,7 +147,12 @@ function AppPanel({ app, onClose }) {
           <h3>{app.job.title}</h3>
           <p className="muted">
             {app.job.company}
-            {app.job.location ? ` · ${app.job.location}` : ""}
+            {app.job.location ? (
+              <>
+                <Sep />
+                {app.job.location}
+              </>
+            ) : null}
           </p>
         </div>
         <button type="button" className="icon-btn" onClick={onClose} aria-label="Close">
@@ -337,8 +343,7 @@ export default function TrackerView({ onRequireAccount }) {
 
   if (status !== "signedIn") {
     return (
-      <div className="page empty-state">
-        <KanbanSquare size={36} aria-hidden />
+      <div className="page gate">
         <h1>Track every application in one place</h1>
         <p className="muted">Save jobs from your hunts, move them from Applied to Offer, set follow-up reminders, and keep notes for each one.</p>
         <button type="button" className="btn btn-primary" onClick={() => onRequireAccount("Sign in to use the tracker.")} disabled={status === "loading"}>
@@ -366,7 +371,12 @@ export default function TrackerView({ onRequireAccount }) {
           <h1>Tracker</h1>
           <p className="muted">
             {apps.length} job{apps.length === 1 ? "" : "s"} tracked
-            {due.length > 0 && <span className="bad-text"> · {due.length} follow-up{due.length === 1 ? "" : "s"} due</span>}
+            {due.length > 0 && (
+              <span className="bad-text">
+                <Sep />
+                {due.length} follow-up{due.length === 1 ? "" : "s"} due
+              </span>
+            )}
           </p>
         </div>
         <div className="page-actions">
@@ -428,7 +438,7 @@ export default function TrackerView({ onRequireAccount }) {
                   {col.items.map((a) => (
                     <AppCard key={a.id} app={a} onOpen={setOpenId} onDragStart={setDragId} dragging={dragId === a.id} />
                   ))}
-                  {!col.items.length && <p className="column-empty muted small">{col.id === "saved" ? "Save jobs from a hunt to start." : `Drag cards here · ${col.hint}`}</p>}
+                  {!col.items.length && <p className="column-empty muted small">{col.id === "saved" ? "Save jobs from a hunt to start." : `${col.hint}. Drag cards here.`}</p>}
                 </div>
               </section>
             ))}

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartNoAxesColumn, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
 import { useDocumentTitle } from "../hooks/useUtils";
@@ -137,8 +137,7 @@ export default function InsightsView({ onRequireAccount }) {
 
   if (status !== "signedIn") {
     return (
-      <div className="page empty-state">
-        <ChartNoAxesColumn size={36} aria-hidden />
+      <div className="page gate">
         <h1>See your search in numbers</h1>
         <p className="muted">Your pipeline and response rate, the skills employers ask for most in your searches, and where pay lands against your floor.</p>
         <button type="button" className="btn btn-primary" onClick={() => onRequireAccount("Sign in to see insights from your searches and applications.")} disabled={status === "loading"}>
@@ -218,7 +217,7 @@ export default function InsightsView({ onRequireAccount }) {
               Closed: {Object.entries(pipeline.outcomes)
                 .filter(([, n]) => n)
                 .map(([k, n]) => `${n} ${k}`)
-                .join(" · ")}
+                .join(", ")}
             </p>
           )}
         </ChartCard>
@@ -350,7 +349,7 @@ export default function InsightsView({ onRequireAccount }) {
           {seniorityRows.length > 0 && (
             <>
               <h4 className="mini-head">Level</h4>
-              <p className="small muted">{seniorityRows.map((r) => `${r.label} ${pct(r.count / market.totalJobs)}`).join(" · ")}</p>
+              <p className="small muted">{seniorityRows.map((r) => `${r.label} ${pct(r.count / market.totalJobs)}`).join(", ")}</p>
             </>
           )}
         </ChartCard>

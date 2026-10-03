@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Check, CircleCheckBig, CircleDot, CircleOff, CircleSlash, ListChecks, Plus } from "lucide-react";
+import { Check, CircleCheckBig, CircleDot, CircleOff, CircleSlash, Plus } from "lucide-react";
 import { api } from "../lib/api";
 import { fitProfile, profileReady } from "../lib/fit";
 import { hashOf } from "../lib/format";
@@ -36,7 +36,7 @@ export default function RequirementCheck({ jobId, profile, onAddSkill, jevEnable
   return (
     <section className="panel req-check">
       <div className="panel-title">
-        <ListChecks size={16} aria-hidden /> Requirement check
+        Requirement check
       </div>
       {!asked || !ready ? (
         <>
@@ -79,8 +79,7 @@ export default function RequirementCheck({ jobId, profile, onAddSkill, jevEnable
                 )}
                 {soft.length > 0 && (
                   <span>
-                    {" "}
-                    · <strong>{metCount(soft)}</strong> of {soft.length} preferred
+                    , <strong>{metCount(soft)}</strong> of {soft.length} preferred
                   </span>
                 )}
               </p>

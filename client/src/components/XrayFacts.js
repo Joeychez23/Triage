@@ -1,4 +1,3 @@
-import { ScanSearch } from "lucide-react";
 import { ARRANGEMENTS, DEGREE, EMPLOYMENT, SENIORITY, SPONSORSHIP, YEARS } from "../lib/constants";
 
 const level = (v, labels) => (v == null ? null : labels[Math.min(labels.length - 1, Math.round(v * (labels.length - 1)))]);
@@ -9,7 +8,7 @@ export default function XrayFacts({ analysis, pending }) {
     return (
       <section className="panel xray">
         <div className="panel-title">
-          <ScanSearch size={16} aria-hidden /> X-ray
+          X-ray
         </div>
         <p className="muted small">{pending ? "Reading the posting…" : "No X-ray for this posting yet."}</p>
       </section>
@@ -31,7 +30,7 @@ export default function XrayFacts({ analysis, pending }) {
   return (
     <section className="panel xray">
       <div className="panel-title">
-        <ScanSearch size={16} aria-hidden /> X-ray
+        X-ray
         <span className="muted small panel-sub">read from the posting by Jev</span>
       </div>
       <dl className="facts">

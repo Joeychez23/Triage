@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Ban, Briefcase, Check, CircleCheck, CloudOff, FileText, ListChecks, Loader2, Lock, MapPin, ShieldCheck, SlidersVertical, Sparkles, Upload, X } from "lucide-react";
+import { Ban, Check, CloudOff, Loader2, Upload, X } from "lucide-react";
 import ChipInput from "../components/ChipInput";
 import ListEditor from "../components/ListEditor";
 import Dialog from "../components/Dialog";
@@ -33,13 +33,11 @@ const MUST_HAVE_EXAMPLES = [
 const CURRENCIES = ["USD", "CAD", "GBP", "EUR", "AUD", "INR", "SGD", "CHF", "SEK", "NZD", "MXN", "BRL"];
 const WEIGHT_LABELS = ["Off", "Low", "Medium", "High"];
 
-function Section({ id, icon: Icon, title, hint, children }) {
+function Section({ id, title, hint, children }) {
   return (
     <section className="panel profile-section" id={id} aria-labelledby={`${id}-title`}>
       <header>
-        <h2 id={`${id}-title`}>
-          <Icon size={18} aria-hidden /> {title}
-        </h2>
+        <h2 id={`${id}-title`}>{title}</h2>
         {hint && <p className="muted small">{hint}</p>}
       </header>
       {children}
@@ -90,7 +88,7 @@ function ResumeBox({ profile, updateProfile, onSkills }) {
         {busy ? <Loader2 size={20} className="spin" aria-hidden /> : <Upload size={20} aria-hidden />}
         <div>
           <strong>{profile.resumeName || "Drop your resume here"}</strong>
-          <span className="muted small">PDF, Word (.docx), or text · read in memory, never stored as a file</span>
+          <span className="muted small">PDF, Word (.docx) or text. Read in memory, never stored as a file.</span>
         </div>
         <button type="button" className="btn btn-sm" onClick={() => fileRef.current?.click()} disabled={busy}>
           {profile.resumeText ? "Replace" : "Choose file"}
@@ -152,7 +150,7 @@ function AccountSection() {
   };
 
   return (
-    <Section id="account" icon={ShieldCheck} title="Account" hint={`Signed in as ${user.email}`}>
+    <Section id="account" title="Account" hint={`Signed in as ${user.email}`}>
       <div className="form-grid">
         <label className="field">
           <span>Display name</span>
@@ -261,7 +259,7 @@ function ProfileEditor() {
 
       <div className="profile-layout">
         <div className="profile-main">
-          <Section id="basics" icon={Briefcase} title="What you're looking for">
+          <Section id="basics" title="What you're looking for">
             <label className="field">
               <span>Headline</span>
               <input value={profile.headline} maxLength={120} placeholder="e.g. Frontend engineer focused on design systems" onChange={(e) => set("headline")(e.target.value)} />
@@ -295,7 +293,7 @@ function ProfileEditor() {
             </div>
           </Section>
 
-          <Section id="skills" icon={CircleCheck} title="Skills" hint="Tools, languages, and specialties. Matching uses meaning, so related skills still count.">
+          <Section id="skills" title="Skills" hint="Tools, languages, and specialties. Matching uses meaning, so related skills still count.">
             <ChipInput value={profile.skills} onChange={set("skills")} max={60} maxLength={40} suggestions={SKILL_NAMES} normalize={canonicalSkill} placeholder="Add a skill and press Enter" label="Skills" />
             {newSuggestions.length > 0 && (
               <div className="suggestions">
@@ -314,11 +312,11 @@ function ProfileEditor() {
             )}
           </Section>
 
-          <Section id="resume" icon={FileText} title="Resume" hint="Used to judge skills, level, and each job's requirements. It's sent to the server for scoring and stored only in your profile.">
+          <Section id="resume" title="Resume" hint="Used to judge skills, level, and each job's requirements. It's sent to the server for scoring and stored only in your profile.">
             <ResumeBox profile={profile} updateProfile={updateProfile} onSkills={setSuggested} />
           </Section>
 
-          <Section id="where" icon={MapPin} title="Where and how you work">
+          <Section id="where" title="Where and how you work">
             <div className="field">
               <span>Places you'd commute to</span>
               <ChipInput value={profile.locations} onChange={set("locations")} max={6} maxLength={80} placeholder="e.g. Austin, TX" label="Locations" splitOnComma={false} />
@@ -403,7 +401,7 @@ function ProfileEditor() {
 
           <section className="panel" id="weights">
             <div className="panel-title">
-              <SlidersVertical size={16} aria-hidden /> Fit weights
+              Fit weights
             </div>
             <p className="small muted">How much each factor counts. Changing these re-ranks results instantly.</p>
             {DIMENSIONS.map(({ id, label, hint }) => (
@@ -444,10 +442,10 @@ function ProfileEditor() {
 }
 
 const PERKS = [
-  [Sparkles, "A fit score on every job", "Skills, level, role, commute, and pay, weighted the way you choose."],
-  [Ban, "Dealbreakers in plain English", "Write \"requires on-call\" or \"no crypto companies\" and matching jobs sink to the bottom."],
-  [ListChecks, "Requirement checks", "See which requirements you already meet and which of your skills to lead with."],
-  [FileText, "Resume import", "Upload a PDF or Word file and Triage picks out your skills."],
+  ["A fit score on every job", "Skills, level, role, commute and pay, weighted the way you choose."],
+  ["Dealbreakers in plain English", "Write \"requires on-call\" or \"no crypto companies\" and matching jobs sink to the bottom."],
+  ["Requirement checks", "See which requirements you already meet and which of your skills to lead with."],
+  ["Resume import", "Upload a PDF or Word file and Triage picks out your skills."],
 ];
 
 // What guests see: the profile is an account feature.
@@ -456,15 +454,11 @@ function LockedProfile({ onRequireAccount }) {
   return (
     <div className="page locked">
       <section className="locked-card" aria-labelledby="locked-title">
-        <span className="locked-icon" aria-hidden>
-          <Lock size={22} />
-        </span>
         <h1 id="locked-title">Your profile lives in your account</h1>
         <p className="muted">Create a free account to build a profile. Triage scores every job against it, and it follows you to any device.</p>
         <ul className="perks">
-          {PERKS.map(([Icon, title, text]) => (
+          {PERKS.map(([title, text]) => (
             <li key={title}>
-              <Icon size={18} aria-hidden />
               <div>
                 <strong>{title}</strong>
                 <span className="muted small">{text}</span>

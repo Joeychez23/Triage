@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { AlertTriangle, Ban, Bookmark, Clock, Sparkles } from "lucide-react";
+import { Ban } from "lucide-react";
 import CompanyMark from "./CompanyMark";
 import FitRing from "./FitRing";
 import Chip from "./Chip";
@@ -9,22 +9,25 @@ import { ago, salaryText } from "../lib/format";
 
 const statusLabel = Object.fromEntries(STATUSES.map((s) => [s.id, s.label]));
 
-function JobCard({ job, scored, selected, onSelect, tracked, isNew, scoring, profileReady }) {
+function JobCard({ job, rank, scored, selected, onSelect, tracked, isNew, scoring, profileReady }) {
   const a = job.analysis;
   const arrangement = a ? ARRANGEMENTS[a.arrangement] : null;
   const pay = salaryText(job.salary);
   const hitBreaker = scored?.hit ? scored.dealbreakers.find((d) => d.p >= 0.6) : null;
   return (
-    <article className={`job-card ${selected ? "selected" : ""} ${scored?.hit ? "is-dealbreaker" : ""}`}>
+    <article className={`job-card ${rank != null ? "has-rank" : ""} ${selected ? "selected" : ""} ${scored?.hit ? "is-dealbreaker" : ""}`}>
       <button type="button" className="job-card-hit" onClick={() => onSelect(job.id)} aria-pressed={selected} aria-label={`${job.title} at ${job.company}`} />
+      {rank != null && (
+        <span className="job-rank" aria-hidden>
+          {String(rank).padStart(2, "0")}
+        </span>
+      )}
       <CompanyMark name={job.company} logo={job.companyLogo} size={44} />
       <div className="job-card-main">
         <div className="job-card-top">
           <h3 className="job-title">{job.title}</h3>
           {isNew && (
-            <Chip tone="accent" icon={Sparkles}>
-              New
-            </Chip>
+            <Chip tone="accent">New</Chip>
           )}
         </div>
         <p className="job-sub">
@@ -45,9 +48,7 @@ function JobCard({ job, scored, selected, onSelect, tracked, isNew, scoring, pro
           {a?.sponsorship === "will_not" && <Chip tone="warn">No sponsorship</Chip>}
           {a?.sponsorship === "clearance" && <Chip tone="warn">Clearance</Chip>}
           {a && a.redFlags >= 0.5 && (
-            <Chip tone="bad" icon={AlertTriangle}>
-              Red flags
-            </Chip>
+            <Chip tone="bad">Red flags</Chip>
           )}
         </div>
         {hitBreaker && (
@@ -58,12 +59,10 @@ function JobCard({ job, scored, selected, onSelect, tracked, isNew, scoring, pro
         <div className="job-card-foot">
           <SourceBadges source={job.source} alsoOn={job.alsoOn} />
           <span className="muted small">
-            <Clock size={12} aria-hidden /> {ago(job.postedAt || job.firstSeenAt) || "Date unknown"}
+            {ago(job.postedAt || job.firstSeenAt) || "Date unknown"}
           </span>
           {tracked && (
-            <Chip tone="info" icon={Bookmark}>
-              {statusLabel[tracked.status]}
-            </Chip>
+            <Chip tone="info">{statusLabel[tracked.status]}</Chip>
           )}
         </div>
       </div>

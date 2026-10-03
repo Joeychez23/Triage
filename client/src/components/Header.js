@@ -5,6 +5,8 @@ import { Link, useRouter } from "../hooks/useRouter";
 import { useAuth } from "../hooks/useAuth";
 import { initials } from "../lib/format";
 
+const DATELINE = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+
 const NAV = [
   { to: "/", name: "hunt", label: "Hunt", Icon: Binoculars },
   { to: "/tracker", name: "tracker", label: "Tracker", Icon: KanbanSquare },
@@ -35,11 +37,17 @@ export default function Header({ onSignIn, isDark, onToggleTheme }) {
   const active = route.name === "job" ? "hunt" : route.name;
 
   return (
+    // A newspaper masthead: the dateline row scrolls away and the section bar
+    // below the double rule stays pinned.
     <header className="app-header">
-      <div className="header-inner">
+      <div className="masthead">
+        <span className="masthead-note">{DATELINE}</span>
         <Link to="/" className="brand" aria-label="Triage home">
           <Logo />
         </Link>
+        <span className="masthead-note masthead-note-end">LinkedIn, Indeed and Glassdoor</span>
+      </div>
+      <div className="header-bar">
         <nav className="main-nav" aria-label="Main">
           {NAV.map(({ to, name, label, Icon }) => (
             <Link key={name} to={to} className={`nav-link ${active === name ? "active" : ""}`} aria-current={active === name ? "page" : undefined}>

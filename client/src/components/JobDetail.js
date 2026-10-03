@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowUpRight, Building2, Check, Clock, EyeOff, Link2, MapPin, Users, Wallet } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, EyeOff, Link2 } from "lucide-react";
 import CompanyMark from "./CompanyMark";
 import SourceBadges from "./SourceBadge";
 import FitPanel from "./FitPanel";
@@ -19,7 +19,7 @@ function PayPanel({ salary, profile }) {
     return (
       <section className="panel pay">
         <div className="panel-title">
-          <Wallet size={16} aria-hidden /> Pay
+          Pay
         </div>
         <p className="muted small">No pay is listed, and Jev didn't find a pay range in the description.</p>
       </section>
@@ -32,13 +32,11 @@ function PayPanel({ salary, profile }) {
   const max = annual ? Math.max(annual.max, floor || 0) * 1.15 : 1;
   return (
     <section className="panel pay">
-      <div className="panel-title">
-        <Wallet size={16} aria-hidden /> Pay
-      </div>
+      <div className="panel-title">Pay</div>
       <p className="pay-amount">{salaryText(salary, { compact: false })}</p>
       <p className="muted small">
         {sourceLabel}
-        {annual && salary.period !== "year" ? ` · about ${money(annual.min, salary.currency)}–${money(annual.max, salary.currency)} a year` : ""}
+        {annual && salary.period !== "year" ? ` (about ${money(annual.min, salary.currency)}–${money(annual.max, salary.currency)} a year)` : ""}
       </p>
       {annual && floor && sameCurrency && (
         <div className="pay-scale" aria-label={`Your floor is ${money(floor, profile.currency)}`}>
@@ -114,20 +112,20 @@ export default function JobDetail({ summary, jobId, scored, fit, scoring, fitErr
           <h2>{view.title}</h2>
           <p className="detail-meta">
             <span>
-              <Building2 size={14} aria-hidden /> {view.company}
+              {view.company}
               {view.companyRating ? <span className="rating"> ★ {view.companyRating.toFixed(1)}</span> : null}
             </span>
             {view.location && (
               <span>
-                <MapPin size={14} aria-hidden /> {view.location}
+                {view.location}
               </span>
             )}
             <span>
-              <Clock size={14} aria-hidden /> {ago(view.postedAt || view.firstSeenAt) || "Date unknown"}
+              {ago(view.postedAt || view.firstSeenAt) || "Date unknown"}
             </span>
             {view.applicants && (
               <span>
-                <Users size={14} aria-hidden /> {view.applicants}
+                {view.applicants}
               </span>
             )}
           </p>

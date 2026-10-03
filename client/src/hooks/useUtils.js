@@ -48,6 +48,6 @@ export function useHotkeys(map, enabled = true) {
 
 export function useDocumentTitle(title) {
   useEffect(() => {
-    document.title = title ? `${title} · Triage` : "Triage · Know which jobs deserve your time";
+    document.title = title ? `${title} | Triage` : "Triage | Know which jobs deserve your time";
   }, [title]);
 }

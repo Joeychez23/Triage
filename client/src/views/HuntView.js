@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { BellRing, Binoculars, Filter, Keyboard, RefreshCw, ScanSearch, Sparkles, Star, X } from "lucide-react";
+import { Keyboard, X } from "lucide-react";
 import SearchBar from "../components/SearchBar";
 import SearchProgress from "../components/SearchProgress";
 import FilterPanel from "../components/FilterPanel";
 import JobCard from "../components/JobCard";
 import JobDetail from "../components/JobDetail";
+import Sep from "../components/Sep";
 import Dialog from "../components/Dialog";
 import { useRouter } from "../hooks/useRouter";
 import { useAuth } from "../hooks/useAuth";
@@ -22,7 +23,7 @@ import { load, save } from "../lib/storage";
 import { ago, plural } from "../lib/format";
 import { Link } from "../hooks/useRouter";
 
-const describeParams = (p) => `${p.keywords}${p.location ? ` · ${p.location}` : p.remoteOnly ? " · Remote" : ""}`;
+const describeParams = (p) => `${p.keywords}${p.location ? ` in ${p.location}` : p.remoteOnly ? ", remote" : ""}`;
 
 function facetCounts(rows, { profile, trackedIds, newIds }) {
   const facets = { arrangements: {}, seniority: {}, sources: {}, withPay: 0, dealbreakers: 0, redFlags: 0, tracked: 0, newCount: 0, hidden: 0 };
@@ -63,40 +64,32 @@ function Landing({ onSearch, busy, health, onRunSaved, runningSaved, onRequireAc
   return (
     <div className="landing">
       <section className="hero">
-        <p className="eyebrow">
-          <Binoculars size={15} aria-hidden /> LinkedIn · Indeed · Glassdoor
-        </p>
-        <h1>
-          Know which jobs <em>deserve</em> your time.
-        </h1>
+        <h1>Know which jobs deserve your time.</h1>
         <p className="hero-sub">
-          Triage scouts three job boards at once, X-rays every posting with Jev, and sorts what it finds by how well it fits <em>you</em>: skills, level,
-          commute, pay, and your own dealbreakers.
+          One search covers LinkedIn, Indeed and Glassdoor. Jev reads every posting for the details the boards leave out, and Triage ranks what it finds
+          against the profile you write.
         </p>
         <SearchBar onSearch={onSearch} busy={busy} disabled={health && !health.search} maxResults={health?.maxResultsPerSource} autoFocus />
         {health && !health.search && <p className="notice notice-warn small">Live search is turned off on this server (no Apify token).</p>}
       </section>
 
-      <section className="how">
+      <section className="how" aria-label="How Triage works">
         <article>
-          <span className="how-icon">
-            <Binoculars size={18} />
-          </span>
-          <h3>Scout</h3>
-          <p>Apify scrapers search LinkedIn, Indeed, and Glassdoor in parallel. Duplicate postings across boards are merged into one.</p>
+          <h3>
+            <span className="how-num">1</span> Scout
+          </h3>
+          <p>Apify scrapers search the boards in parallel, and a posting that shows up on more than one board is merged into a single listing.</p>
         </article>
         <article>
-          <span className="how-icon">
-            <ScanSearch size={18} />
-          </span>
-          <h3>X-ray</h3>
-          <p>Jev reads each posting for what job boards bury: real work style, level, visa stance, pace, red flags, and pay hidden in the text.</p>
+          <h3>
+            <span className="how-num">2</span> X-ray
+          </h3>
+          <p>Jev reads each posting for what the board buries, from the real work arrangement to visa stance and pay hidden in the text.</p>
         </article>
         <article>
-          <span className="how-icon">
-            <Sparkles size={18} />
-          </span>
-          <h3>Fit</h3>
+          <h3>
+            <span className="how-num">3</span> Fit
+          </h3>
           <p>Your profile is compared with every job. Write dealbreakers in plain English, like "requires on-call", and Triage flags them.</p>
         </article>
       </section>
@@ -105,7 +98,7 @@ function Landing({ onSearch, busy, health, onRunSaved, runningSaved, onRequireAc
         {status === "signedIn" ? (
           <section className="panel">
             <div className="panel-title">
-              <Sparkles size={16} aria-hidden /> Your hunting profile
+              Your hunting profile
             </div>
             <div className="meter" aria-label={`Profile ${Math.round(ratio * 100)}% complete`}>
               <span style={{ width: `${ratio * 100}%` }} />
@@ -124,11 +117,10 @@ function Landing({ onSearch, busy, health, onRunSaved, runningSaved, onRequireAc
         ) : (
           <section className="panel">
             <div className="panel-title">
-              <Sparkles size={16} aria-hidden /> Fit scores need a profile
+              Fit scores need a profile
             </div>
             <p className="muted small">
-              Searching is free without an account. Sign up to build a profile and Triage scores every job for you: skills, level, commute, pay, and
-              your own dealbreakers. You also get the tracker, insights, and saved searches.
+              Searching is free without an account. Sign up and Triage scores every job against your profile, and keeps the jobs you track between visits.
             </p>
             <button
               type="button"
@@ -144,7 +136,7 @@ function Landing({ onSearch, busy, health, onRunSaved, runningSaved, onRequireAc
         {status === "signedIn" && (
           <section className="panel">
             <div className="panel-title">
-              <BellRing size={16} aria-hidden /> Saved searches
+              Saved searches
             </div>
             {savedSearches.length ? (
               <ul className="list">
@@ -153,8 +145,15 @@ function Landing({ onSearch, busy, health, onRunSaved, runningSaved, onRequireAc
                     <div>
                       <strong>{s.name}</strong>
                       <span className="muted small">
-                        {describeParams(s.params)} · {s.lastRunAt ? `ran ${ago(s.lastRunAt)}` : "never run"}
-                        {s.lastNewCount ? ` · ${s.lastNewCount} new` : ""}
+                        {describeParams(s.params)}
+                        <Sep />
+                        {s.lastRunAt ? `ran ${ago(s.lastRunAt)}` : "never run"}
+                        {s.lastNewCount ? (
+                          <>
+                            <Sep />
+                            {s.lastNewCount} new
+                          </>
+                        ) : null}
                       </span>
                     </div>
                     <button type="button" className="btn btn-sm" onClick={() => onRunSaved(s)} disabled={runningSaved === s.id}>
@@ -171,7 +170,7 @@ function Landing({ onSearch, busy, health, onRunSaved, runningSaved, onRequireAc
 
         <section className="panel">
           <div className="panel-title">
-            <RefreshCw size={16} aria-hidden /> Recent hunts
+            Recent hunts
           </div>
           {recentList.length ? (
             <ul className="list">
@@ -180,8 +179,15 @@ function Landing({ onSearch, busy, health, onRunSaved, runningSaved, onRequireAc
                   <button type="button" className="list-link" onClick={() => navigate(`/search/${s.id}`)}>
                     <strong>{describeParams(s.params)}</strong>
                     <span className="muted small">
-                      {(s.params.sources || []).map((id) => SOURCES[id]?.label).join(", ")} · {ago(s.createdAt)}
-                      {s.jobCount != null ? ` · ${plural(s.jobCount, "job")}` : ""}
+                      {(s.params.sources || []).map((id) => SOURCES[id]?.label).join(", ")}
+                      <Sep />
+                      {ago(s.createdAt)}
+                      {s.jobCount != null ? (
+                        <>
+                          <Sep />
+                          {plural(s.jobCount, "job")}
+                        </>
+                      ) : null}
                     </span>
                   </button>
                   <button
@@ -439,24 +445,34 @@ export default function HuntView({ onRequireAccount }) {
             <div className="results-head">
               <p>
                 <strong>{visible.length}</strong> of {plural(jobs.length, "job")}
-                {search.cached && <span className="muted small"> · cached</span>}
-                {newIds.size > 0 && <span className="new-count"> · {newIds.size} new</span>}
+                {search.cached && (
+                  <span className="muted small">
+                    <Sep />
+                    cached
+                  </span>
+                )}
+                {newIds.size > 0 && (
+                  <span className="new-count">
+                    <Sep />
+                    {newIds.size} new
+                  </span>
+                )}
               </p>
               <div className="results-actions">
                 {!wide && (
                   <button type="button" className="btn btn-sm" onClick={() => setFiltersOpen(true)}>
-                    <Filter size={14} aria-hidden /> Filters
+                    Filters
                     {activeFilterCount(filters) > 0 && <span className="badge">{activeFilterCount(filters)}</span>}
                   </button>
                 )}
                 {!isRunning(search) && (
                   <button type="button" className="btn btn-sm btn-ghost" onClick={() => runSearch(search.params, true)} title="Scrape the boards again for fresh results" disabled={start.isPending}>
-                    <RefreshCw size={14} aria-hidden /> Refresh
+                    Refresh
                   </button>
                 )}
                 {!alreadySaved && !isRunning(search) && (
                   <button type="button" className="btn btn-sm btn-ghost" onClick={saveSearch}>
-                    <Star size={14} aria-hidden /> Save search
+                    Save search
                   </button>
                 )}
                 <button type="button" className="icon-btn" onClick={() => setHelpOpen(true)} aria-label="Keyboard shortcuts" title="Keyboard shortcuts">
@@ -467,7 +483,6 @@ export default function HuntView({ onRequireAccount }) {
 
             {!fitScores.ready && jobs.length > 0 && (
               <div className="notice notice-info small">
-                <Sparkles size={14} aria-hidden />
                 {status === "signedIn" ? (
                   <span>
                     <Link to="/profile">Add your skills and goals</Link> to rank these jobs by fit.
@@ -489,10 +504,11 @@ export default function HuntView({ onRequireAccount }) {
             {fitScores.error && <div className="notice notice-bad small">Fit scoring: {fitScores.error}</div>}
 
             <div className="job-list">
-              {visible.map(({ job, scored }) => (
+              {visible.map(({ job, scored }, i) => (
                 <JobCard
                   key={job.id}
                   job={job}
+                  rank={i + 1}
                   scored={scored}
                   selected={job.id === selectedId}
                   onSelect={select}
@@ -524,7 +540,7 @@ export default function HuntView({ onRequireAccount }) {
               )}
             </div>
             <p className="results-foot muted small">
-              {scoredCount > 0 && `${scoredCount} scored by Jev · `}Results scraped {ago(search.finishedAt || search.createdAt)} via Apify
+              Results scraped {ago(search.finishedAt || search.createdAt)} via Apify.{scoredCount > 0 && ` ${scoredCount} scored by Jev.`}
             </p>
           </section>
 
@@ -532,7 +548,6 @@ export default function HuntView({ onRequireAccount }) {
             <section className="hunt-detail" aria-label="Job details">
               {detail || (
                 <div className="detail-placeholder">
-                  <Binoculars size={28} aria-hidden />
                   <p>Select a job to see its fit, X-ray, and requirements.</p>
                 </div>
               )}

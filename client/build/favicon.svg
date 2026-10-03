@@ -4,9 +4,9 @@
     .a { fill: #ea580c; }
     .c { fill: #f3eee6; }
     @media (prefers-color-scheme: dark) {
-      .t { fill: #20232b; }
-      .a { fill: #5b93ff; }
-      .c { fill: #e4ecff; }
+      .t { fill: #2a2622; }
+      .a { fill: #f47b3a; }
+      .c { fill: #f3eee6; }
     }
   </style>
   <rect class="t" width="64" height="64" rx="15"/>

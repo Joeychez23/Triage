@@ -1,4 +1,4 @@
-import { AlertTriangle, CheckCircle2, Loader2, ScanSearch, Sparkles } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Gauge, Loader2, ScanSearch } from "lucide-react";
 import { SOURCES } from "../lib/constants";
 
 // Live status while boards are scouted and postings are X-rayed, then a
@@ -26,7 +26,7 @@ export default function SearchProgress({ search, fitPending, fitTotal, fitHint =
     {
       key: "fit",
       label: "Fit",
-      icon: Sparkles,
+      icon: Gauge,
       state: fitTotal == null ? "idle" : fitPending > 0 ? "busy" : "done",
       detail: fitTotal == null ? fitHint : fitPending > 0 ? `${fitTotal - fitPending}/${fitTotal} scored` : `${fitTotal} scored`,
     },

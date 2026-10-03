@@ -73,7 +73,7 @@ Create `server/.env` from `server/.env.example`:
 | `MONGODB_URI` | Atlas connection string **without** a database name |
 | `MONGODB_DB` | Database name (default `triage_jobs`) |
 | `JWT_SECRET` | Long random string for signing sessions |
-| `API_PORT` | API port (default 5060; the React dev server runs on 3200) |
+| `API_PORT` | API port (default 5070; the React dev server runs on 3200. Avoid 5060, which Chrome blocks) |
 
 Optional tuning (results per board, Apify spend cap per run, cache hours, search
 quotas, which Apify actors to use) is documented in `server/.env.example`.
@@ -85,7 +85,7 @@ fit scoring, the tracker, and insights are unavailable.
 ## Run
 
 ```bash
-npm run dev        # API on :5060 + React dev server on :3200 (proxied)
+npm run dev        # API on :5070 + React dev server on :3200 (proxied)
 npm test           # server (node:test) + client (Jest) tests
 npm run build      # production build of the client
 npm start          # Express serves the API and client/build on API_PORT

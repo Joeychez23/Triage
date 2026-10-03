@@ -12,7 +12,7 @@ export default function FitRing({ score, size = 52, stroke = 5, loading = false,
       style={{ width: size, height: size }}
       role="img"
       aria-label={score == null ? (loading ? "Scoring fit" : "Fit not scored") : `Fit ${score} out of 100, ${text}`}
-      title={score == null ? (loading ? "Scoring fit…" : "Add a profile to score fit") : `${text} · ${score}/100`}
+      title={score == null ? (loading ? "Scoring fit…" : "Add a profile to score fit") : `${text}, ${score}/100`}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
         <circle className="fit-track" cx={size / 2} cy={size / 2} r={r} strokeWidth={stroke} fill="none" />

@@ -55,7 +55,7 @@ function Shell() {
         </Suspense>
       </main>
       <footer className="app-footer muted small">
-        Listings scraped from LinkedIn, Indeed, and Glassdoor with Apify. Judgments by TypeSafe Jev. Always confirm details on the original posting.
+        Listings collected from LinkedIn, Indeed and Glassdoor with Apify. Scoring by TypeSafe Jev.
       </footer>
       <AuthDialog open={auth.open} reason={auth.reason} initialMode={auth.mode} onClose={() => setAuth((a) => ({ ...a, open: false }))} />
     </div>

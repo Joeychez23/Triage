@@ -1,4 +1,4 @@
-import { Ban, CircleCheck, CircleDashed, CircleHelp, Sparkles } from "lucide-react";
+import { Ban, CircleCheck, CircleDashed, CircleHelp } from "lucide-react";
 import FitRing from "./FitRing";
 import { DIMENSIONS } from "../lib/constants";
 import { DEALBREAKER_HIT, DEALBREAKER_MAYBE, MUST_HAVE_MET, fitLabel } from "../lib/fit";
@@ -21,7 +21,7 @@ export default function FitPanel({ scored, fit, profile, scoring, ready, error, 
     return (
       <section className="panel fit-panel empty">
         <div className="panel-title">
-          <Sparkles size={16} aria-hidden /> Fit Lens
+          Fit Lens
         </div>
         <p className="muted">
           Tell Triage what you're after and every job gets a fit score: skills, level, role, location, pay, and your own dealbreakers.
@@ -47,7 +47,7 @@ export default function FitPanel({ scored, fit, profile, scoring, ready, error, 
         <FitRing score={score} size={76} stroke={7} loading={scoring && !fit} hit={scored?.hit} />
         <div>
           <div className="panel-title">
-            <Sparkles size={16} aria-hidden /> Fit Lens
+            Fit Lens
           </div>
           <p className="fit-label">{fit ? label : scoring ? "Scoring…" : error ? "Couldn't score" : "Not scored yet"}</p>
           {error && !fit && <p className="small bad-text">{error}</p>}

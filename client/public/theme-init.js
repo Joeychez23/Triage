@@ -1,4 +1,3 @@
 try {
-  var t = localStorage.getItem("triage.theme");
-  if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+  if (localStorage.getItem("triage.theme") === "dark") document.documentElement.dataset.theme = "dark";
 } catch (e) {}
